@@ -5,3 +5,10 @@ langchain
 ctransformers
 llama-cpp-python
 replicate
+pymilvus
+PyPDF2
+langchain-community
+flask
+llama-index
+llama-index-vector-stores-milvus
+llama-index-readers-file

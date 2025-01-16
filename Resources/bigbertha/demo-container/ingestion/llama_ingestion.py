@@ -14,6 +14,10 @@ from llama_index.readers.file import PDFReader # ts 수정
 from pymilvus import Milvus # ts 수정 from gpt
 import os
 
+# ts
+from dotenv import load_dotenv
+load_dotenv()
+
 # Define constants for Milvus configuration
 MILVUS_HOST = os.environ.get("MILVUS_HOST", "10.97.151.193")
 MILVUS_PORT = os.environ.get("MILVUS_PORT", "19530")
