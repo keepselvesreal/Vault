@@ -14,7 +14,10 @@ def redis_conn():
     return r
 
 def load_llm():
-    llm_local_path = os.environ.get('MODEL_LOCAL_PATH')
+    llm_repo = os.environ.get('HF_REPO')
+    llm_file = os.environ.get('HF_MODEL_FILE')
+    llm_local_path = hf_hub_download(repo_id=llm_repo, filename=llm_file)
+    # llm_local_path = os.environ.get('MODEL_LOCAL_PATH')
     llm = CTransformers(
         model=llm_local_path,     #https://huggingface.co/TheBloke/Llama-2-7B-Chat-GGML/tree/main
         model_type='llama',
