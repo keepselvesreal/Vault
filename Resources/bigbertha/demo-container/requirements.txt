@@ -1,0 +1,7 @@
+streamlit
+streamlit-feedback
+redis
+langchain
+ctransformers
+llama-cpp-python
+replicate
