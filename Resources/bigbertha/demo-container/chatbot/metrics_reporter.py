@@ -21,6 +21,7 @@ def check_redis_connection():
         logger.error("Redis 연결 실패", exc_info=True)
         sys.exit(1)
 
+# ts: Redis 연결 확인
 check_redis_connection()
 
 

@@ -13,7 +13,6 @@ def redis_conn():
     r = redis.Redis(host='localhost', port=6379, db=0)
     return r
 
-
 def load_llm():
     llm_local_path = os.environ.get('MODEL_LOCAL_PATH')
     llm = CTransformers(
