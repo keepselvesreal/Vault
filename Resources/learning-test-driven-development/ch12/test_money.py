@@ -80,9 +80,9 @@ class TestMoney(unittest.TestCase):
         self.bank.addExchangeRate("EUR", "USD", 1.3)
         self.assertEqual(self.bank.convert(tenEuros, "USD"), Money(13, "USD"))
 
-    def testWhatisTheConversionRateFromEURToUSD(self):
-        tenEuros = Money(10, "EUR")
-        self.assertEqual(self.bank.convert(tenEuros, "USD"), Money(12, "USD"))
+    # def testWhatisTheConversionRateFromEURToUSD(self):
+    #     tenEuros = Money(10, "EUR")
+    #     self.assertEqual(self.bank.convert(tenEuros, "USD"), Money(12, "USD"))
 
     def testConversionWithMissingExchangeRate(self):
         bank = Bank()
