@@ -15,22 +15,15 @@ from pymilvus import Milvus # ts 수정 from gpt
 import os
 
 # Define constants for Milvus configuration
-# MILVUS_HOST = os.environ.get("MILVUS_HOST", "10.97.151.193")
-# MILVUS_PORT = os.environ.get("MILVUS_PORT", "19530")
-# localtest용
-MILVUS_HOST = os.environ.get("MILVUS_HOST", "127.0.0.1") # ts
-MILVUS_PORT = os.environ.get("MILVUS_PORT", "19530") # ts
-from dotenv import load_dotenv
-load_dotenv()
-
+MILVUS_HOST = os.environ.get("MILVUS_HOST", "10.97.151.193")
+MILVUS_PORT = os.environ.get("MILVUS_PORT", "19530")
 MILVUS_URI = f"http://{MILVUS_HOST}:{MILVUS_PORT}"
 
 # Initialize PDFReader
 pdf_reader = PDFReader()
 
 # Load documents from a PDF file
-# document_path = Path('ingestion/keiichi_tsuchiya.pdf')  #ToDo: load from S3 instead of local
-document_path = Path('keiichi_tsuchiya.pdf') # ts 수정: 개별 파일 동작 점검용
+document_path = Path('ingestion/keiichi_tsuchiya.pdf')  #ToDo: load from S3 instead of local
 documents = pdf_reader.load_data(file=document_path)
 
 # Create an LLMPredictor with default parameters
@@ -51,13 +44,7 @@ vector_store = MilvusVectorStore(
 # Create a StorageContext with the MilvusVectorStore
 storage_context = StorageContext.from_defaults(vector_store=vector_store)
 
-# Create a VectorStoreIndex from the loaded documents
-# index = VectorStoreIndex.from_documents(
-#     documents=documents,
-#     overwrite=True,  # Set to False if you don't want to overwrite the index
-#     service_context=service_context,
-#     storage_context=storage_context
-# )
+
 # ts 수정
 index = VectorStoreIndex.from_documents(
     documents=documents,
