@@ -12,3 +12,4 @@ flask
 llama-index
 llama-index-vector-stores-milvus
 llama-index-readers-file
+gunicorn

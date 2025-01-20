@@ -27,5 +27,6 @@ redis-server &
 
 # Run the Streamlit app and Flask app using Gunicorn
 python3 -m gunicorn chatbot.metrics_reporter:app --bind 0.0.0.0:5000 --workers 3 &
+# python3 -m gunicorn chatbot.metrics_reporter:app --bind 127.0.0.1:5000 --workers 3 &
 
 python3 -m streamlit run chatbot/app.py
