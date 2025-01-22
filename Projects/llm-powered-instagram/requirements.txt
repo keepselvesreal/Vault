@@ -1,0 +1,6 @@
+pytest
+pydantic
+qdrant-client
+pydantic-settings
+loguru
+zenml
