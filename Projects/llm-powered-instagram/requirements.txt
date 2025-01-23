@@ -4,3 +4,4 @@ qdrant-client
 pydantic-settings
 loguru
 zenml
+sentence-transformers

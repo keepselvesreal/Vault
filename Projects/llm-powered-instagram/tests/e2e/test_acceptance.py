@@ -1,12 +1,10 @@
-import pytest
+
 
 class TestAcceptance:
     def test_generate_response(query: str) -> str:
-        retriever = ContextRetriever(mock=True)
+        retriever = ContextRetriever()
         documents = retriever.search(query, k=3)
-        context =  EmbeddedChunk.to_context(documents)
-
-        answer = call_llm_service(query, context)
+        answer = call_llm_service(query, document)
 
         return answer
 

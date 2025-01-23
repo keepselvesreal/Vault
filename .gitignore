@@ -1,3 +1,6 @@
 /Resources/*/venv/
 /Projects/*/venv/
+
 **/.env
+
+/projects/llm-powered-instagram/qdrant_storage/

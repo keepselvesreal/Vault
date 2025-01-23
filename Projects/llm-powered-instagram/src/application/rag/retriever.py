@@ -1,23 +1,23 @@
-
-from ...domain.embedded_chunks import EmbeddedChunk
-from ...domain.queries import Query
+from qdrant_client import QdrantClient
+from sentence_transformers import SentenceTransformer
 
 class ContextRetriever:
-    def __init__(self, mock: bool = False) -> None:
-        self._query_expander = None
-        self._metadata_extractor = None
-        self._reranker = None
+    def __init__(self, client: QdrantClient, vectorizer):
+        self.client = client #! 커플링
+        self.vectorizer = vectorizer
+        # self.vectorizer = SentenceTransformer(
+        #      model_name_or_path = "sentence-transformers/all-MiniLM-L6-v2",
+        #      device = "cpu",
+        #      cache_folder = None,
+        # )
 
-    def search(
-            self,
-            query: str,
-            k: int = 3,
-            exxpand_to_n_queries: int = 3
-    ) -> list:
-         query_model = Query.from_str(query)
+    def search(self, query: str, k: int =3):
+        query_embedding = self.vectorizer.from_query_to_vector(query)
+        search_result = self.client.query_points( #! 커플링
+            collection_name="test_collection",
+            query=query_embedding,
+            limit=k,
+        )
 
-    def _search(self, query: Query, k: int = 3) -> list[EmbeddedChunk]:
-        pass
+        return search_result
 
-    def rerank():
-        pass
