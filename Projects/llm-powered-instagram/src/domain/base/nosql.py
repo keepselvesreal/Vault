@@ -30,7 +30,7 @@ class NoSQLBaseDocument(BaseModel, Generic[T], ABC):
             logger.exception(f"Failed to retrieve document with filter options: {filter_options}")
 
     @classmethod
-    def get_colleciton_name(cls: Type[T]) -> str:
+    def get_collection_name(cls: Type[T]) -> str:
         if not hasattr(cls, "Settings") or not hasattr(cls.Settings, "name"):
             raise
         return cls.Settings.name
@@ -67,7 +67,7 @@ class NoSQLBaseDocument(BaseModel, Generic[T], ABC):
 
 
     def save(self: T, **kwargs) -> T | None:
-        collection = _database[self.get_colleciton_name()]
+        collection = _database[self.get_collection_name()]
         try:
             collection.insert_one(self.to_mongo(**kwargs))
 
