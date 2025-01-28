@@ -9,6 +9,7 @@ class Settings:
     #  MongoDB database
     DATABASE_LOCAL_HOST: str = "mongodb://localhost:27017/"
     DATABASE_HOST: str = None
+    DATABASE_NAME: str = "twin"
 
     # Qdrant vector database
     USE_QDRANT_CLOUD: bool = False

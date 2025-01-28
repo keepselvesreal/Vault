@@ -10,3 +10,4 @@ class MongoDatabaseConnector:
         return client
 
         
+connection = MongoDatabaseConnector()
