@@ -1,0 +1,4 @@
+
+
+class CustomArticleCrawler:
+    pass
