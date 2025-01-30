@@ -22,10 +22,10 @@ class NoSQLBaseDocument(BaseModel, Generic[T], ABC):
             if instance:
                 return cls.from_mongo(instance)
             
-            new_instanace = cls(**filter_options)
-            new_instance = new_instanace.save()
+            new_instance = cls(**filter_options)
+            new_instance = new_instance.save()
             
-            return new_instanace
+            return new_instance
         except:
             logger.exception(f"Failed to retrieve document with filter options: {filter_options}")
 
@@ -33,7 +33,8 @@ class NoSQLBaseDocument(BaseModel, Generic[T], ABC):
     def get_collection_name(cls: Type[T]) -> str:
         if not hasattr(cls, "Settings") or not hasattr(cls.Settings, "name"):
             raise
-        return cls.Settings.name
+        # return cls.Settings.name
+        return str(cls.Settings.name)
 
     @classmethod
     def from_mongo(cls: Type[T], data: dict) -> T:
@@ -75,6 +76,16 @@ class NoSQLBaseDocument(BaseModel, Generic[T], ABC):
         except:
             logger.exception("Failed to insert document")
             return None
+
+    @classmethod    
+    def bulk_find(cls: Type[T], **filter_options) -> list[T]:
+        collection = _database[cls.get_collection_name()]
+        try:
+            instances = collection.find(filter_options)
+            return [document for instance in instances if (document:= cls.from_mongo(instance)) is None]
+        except:
+            logger.error("Failed to retrive documents")
+            return []
 
 
 _database = connection.get_database(settings.DATABASE_NAME)
