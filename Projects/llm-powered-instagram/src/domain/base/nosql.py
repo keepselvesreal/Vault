@@ -82,7 +82,7 @@ class NoSQLBaseDocument(BaseModel, Generic[T], ABC):
         collection = _database[cls.get_collection_name()]
         try:
             instances = collection.find(filter_options)
-            return [document for instance in instances if (document:= cls.from_mongo(instance)) is None]
+            return [document for instance in instances if (document := cls.from_mongo(instance)) is not None]
         except:
             logger.error("Failed to retrive documents")
             return []

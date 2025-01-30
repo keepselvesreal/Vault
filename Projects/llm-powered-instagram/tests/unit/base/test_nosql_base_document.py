@@ -3,7 +3,7 @@ import uuid
 from pydantic import Field
 
 from src.domain.base.nosql import NoSQLBaseDocument
-from src.domain.documents import UserDocument, PostDocument
+from src.domain.documents import UserDocument, ArticleDocument, PostDocument, RepositoryDocument
 
 
 class TestNoSQLBaseDocument:
@@ -64,18 +64,46 @@ class TestNoSQLBaseDocument:
         new_instance = test_document.save(**filter_options)
         assert isinstance(new_instance, test_document)
 
-    def test_bulk_find(self, nosql_base_document):
+    def test_bulk_find_no_data(self, nosql_base_document):
         user = UserDocument.get_or_create(first_name="tae-su", last_name="kang")
         user_id = str(user.id)
         results = PostDocument.bulk_find(author_id=user_id)
         assert isinstance(results, list)
         assert results == []
 
-    def test_get_or_create(self):
+    def test_bulk_find_with_article_document(self):
+        user_id = "b6317053-87fa-4e6a-892f-443467a509d1"
+        results = ArticleDocument.bulk_find(author_id=user_id)
+        assert isinstance(results, list)
+        assert len(results) == 1
+
+    def test_bulk_find_with_post_document(self):
+        user_id = "835612b3-ea87-4b05-9c5e-969300b50ce5"
+        # user_id = "3256258f-b353-47f5-9985-9caf763d99ae"
+        results = PostDocument.bulk_find(author_id=user_id)
+        assert isinstance(results, list)
+        assert len(results) == 1
+
+    def test_bulk_find_with_repository_document(self):
+        user_id = "72b34430-afd3-4639-b4ef-e8f9b0661dc1"
+        results = RepositoryDocument.bulk_find(author_id=user_id)
+        assert isinstance(results, list)
+        assert len(results) == 1
+
+    def test_get_or_create_existing_data(self):
         user = UserDocument.get_or_create(first_name="tae-su", last_name="kang")
         assert isinstance(user, UserDocument)
         assert user.first_name == "tae-su"
         assert user.last_name == "kang"
+        assert user.Settings.name == "users"
+
+    def test_get_or_create_creating_data(self):
+        # user = UserDocument.get_or_create(first_name="jung-su", last_name="kang")
+        # user = UserDocument.get_or_create(first_name="eun", last_name="heo")
+        user = UserDocument.get_or_create(first_name="eun-a", last_name="gwak")
+        assert isinstance(user, UserDocument)
+        assert user.first_name == "eun-a"
+        assert user.last_name == "gwak"
         assert user.Settings.name == "users"
 
 
