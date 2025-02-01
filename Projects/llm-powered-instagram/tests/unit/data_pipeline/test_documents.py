@@ -78,11 +78,37 @@ class TestDocuments:
     def test_post_document_save_with_same_user(self, same_user):
         instance = PostDocument(
             platform="linkedin", 
-            content={"temp": "This is my first posting!"}, 
+            content={"temp": "This is my n번째 posting!"}, 
             author_id=same_user.id, 
             author_full_name=same_user.full_name
         )
         instance.save()
+        assert isinstance(instance, PostDocument)
+        assert isinstance(instance.content, dict)
+        assert instance.platform == "linkedin"
+        assert instance.author_full_name == "tae-su kang"
+
+    def test_repository_document_save_with_same_user(self, same_user):
+        repo_name = "sample_project2"  
+        tree = {
+            "app/app.py": "def main():\n    print('Welcome to the Sample Project!')",
+            "app/helpers.py": "def subtract(a, b): return a - b",
+            "docs/overview.md": "# Sample Project Overview\nThis document explains the project structure.",
+            "requirements.txt": "flask\nnumpy\npandas",
+        }
+        instance = RepositoryDocument(
+            platform="github",
+            name=repo_name, 
+            content=tree,
+            link="https://github.com/keepselvesreal/Vault/Projects/sample2",
+            author_id=same_user.id,
+            author_full_name=same_user.full_name
+            )
+        instance = instance.save()
+        assert isinstance(instance, RepositoryDocument)
+        assert isinstance(instance.content, dict)
+        assert instance.name == repo_name
+        assert instance.author_full_name == "tae-su kang"
 
 
     
