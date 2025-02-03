@@ -23,7 +23,7 @@ def query_data_warehouse(
         # logger.info(f"First name: {first_name}, Last name: {last_name}")
         # user = UserDocument.get_or_create(first_name=first_name, last_name=last_name)
         user = UserDocument(first_name="tae-su", last_name="kang")
-        user.id = uuid.UUID("9992c7b0-6a9e-42fb-8dd3-0c2874a75243")
+        user.id = uuid.UUID("67d9d100-1371-4997-a161-b69b2e284ef1")
         authors.append(user)
 
         results = fetch_all_data(user)

@@ -1,6 +1,6 @@
 from steps.feature_engineering.query_data_warehouse import query_data_warehouse
 from steps.feature_engineering.clean import clean_documents
-from src.domain.cleaned_documents import CleanedPostDocument
+from src.domain.cleaned_documents import CleanedPostDocument, CleanedArticleDocument, CleanedRepositoryDocument
 from src.application.preprocessing.dispatchers import CleaningDispatcher
 
 class TestCleanDocuments:
@@ -12,6 +12,7 @@ class TestCleanDocuments:
         # cleaned_documents = feature_engineering([author_full_name])
 
         raw_documents = query_data_warehouse(author_full_names)
+        print("raw documents\n", raw_documents)
 
         cleaned_documents = []
         for document in raw_documents:
@@ -20,8 +21,11 @@ class TestCleanDocuments:
         
 
         assert isinstance(cleaned_documents, list)
-        assert isinstance(cleaned_documents[0], CleanedPostDocument)
-        assert cleaned_documents[0].platform in ("instagram", "github", "medium")
+        expected_types = (CleanedPostDocument, CleanedArticleDocument, CleanedRepositoryDocument)
+        for document in cleaned_documents:
+            assert isinstance(document, expected_types), \
+            f"Document type {type(document)} is not one of expected types: {expected_types}"
+        assert cleaned_documents[0].platform in ("linkedin", "github", "medium")
         assert len(cleaned_documents) == 3
 
         

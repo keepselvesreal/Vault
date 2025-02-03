@@ -20,3 +20,22 @@ class CleanedPostDocument(CleanedDocument):
         name = "cleaned_posts"
         category = DataCategory.POSTS
         use_vector_index = False
+
+
+class CleanedArticleDocument(CleanedDocument):
+    link: str
+
+    class Config:
+        name = "cleaned_articles"
+        category = DataCategory.ARTICLES
+        use_vector_index = False
+
+
+class CleanedRepositoryDocument(CleanedDocument):
+    name: str
+    link: str
+
+    class Config:
+        name = "cleaned_repositories"
+        category = DataCategory.REPOSITORIES
+        use_vector_index = False
