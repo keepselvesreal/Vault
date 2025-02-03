@@ -1,6 +1,6 @@
-from enum import Enum
+from enum import StrEnum
 
-class DataCategory(Enum):
+class DataCategory(StrEnum):
     PROMPT = "prompt"
     QUERIES = "queries"
 
