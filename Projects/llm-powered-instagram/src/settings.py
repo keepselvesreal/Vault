@@ -18,5 +18,10 @@ class Settings:
     QDRANT_CLOUD_URL: str = "str"
     QDRANT_APIKYE: str | None = None
 
+    # RAG
+    TEXT_EMBEDDING_MODEL_ID: str = "sentence-transformers/all-MiniLM-L6-v2"
+    RAG_MODEL_DEVICE: str = "cpu"
+
+
 settings = Settings()
 

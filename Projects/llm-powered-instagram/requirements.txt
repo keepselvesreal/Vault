@@ -7,3 +7,4 @@ zenml
 sentence-transformers
 pymongo
 zenml
+langchain
