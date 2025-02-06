@@ -8,3 +8,6 @@ sentence-transformers
 pymongo
 zenml
 langchain
+opik
+langchain-openai 
+openai

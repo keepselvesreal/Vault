@@ -6,6 +6,7 @@ import numpy as np
 from sentence_transformers.SentenceTransformer import SentenceTransformer
 from numpy.typing import NDArray
 from loguru import logger
+from sentence_transformers.cross_encoder import CrossEncoder
 
 from .base import SingletonMeta
 from src.settings import settings
@@ -56,3 +57,27 @@ class EmbeddingModelSingleton(metaclass=SingletonMeta):
             embeddings = embeddings.tolist()
 
         return embeddings
+    
+
+class CrossEncoderModelSingleton(metaclass=SingletonMeta):
+    def __init__(
+        self,
+        model_id: str = settings.RERANKING_CROSS_ENCODER_MODEL_ID,
+        device: str = settings.RAG_MODEL_DEVICE,
+    ) -> None:
+        self._model_id = model_id
+        self._device = device
+
+        self._model = CrossEncoder(
+            model_name=self._model_id,
+            device=self._device,
+        )
+        self._model.model.eval()
+
+    def __call__(self, pairs: list[tuple[str, str]], to_list: bool = True) -> NDArray[np.float32] | list[float]:
+        scores = self._model.predict(pairs)
+
+        if to_list:
+            scores = scores.tolist()
+
+        return scores

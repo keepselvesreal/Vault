@@ -22,6 +22,11 @@ class Settings:
     TEXT_EMBEDDING_MODEL_ID: str = "sentence-transformers/all-MiniLM-L6-v2"
     RAG_MODEL_DEVICE: str = "cpu"
 
+    # OpenAI API
+    OPENAI_MODEL_ID: str = "gpt-4o-mini"
+    OPENAI_API_KEY: str | None = None
+
+
 
 settings = Settings()
 
