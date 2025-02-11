@@ -11,3 +11,6 @@ langchain
 opik
 langchain-openai 
 openai
+unsloth
+boto3
+sagemaker
