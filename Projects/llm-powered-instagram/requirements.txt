@@ -14,3 +14,4 @@ openai
 unsloth
 boto3
 sagemaker
+# transformers

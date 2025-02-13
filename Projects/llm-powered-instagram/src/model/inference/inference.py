@@ -7,6 +7,11 @@ try:
     import boto3
 except ModuleNotFoundError:
     logger.warning("Couldn't load AWS or SageMaker imports. Run 'poetry install --with aws' to support AWS.")
+from transformers import (
+    AutoModelForCausalLM,
+    AutoTokenizer,
+)
+
 
 from src.domain.inference import Inference
 from src.settings import settings
@@ -49,6 +54,50 @@ from src.settings import settings
 #             logger.exception("Local inference failed.")
 
 #             raise
+
+
+class PlatformAgnosticInference(Inference):
+    def __init__(
+            self,
+            model_path: str,
+            default_payload: Optional[Dict[str, Any]] = None, 
+            ):
+        # self.device = "cuda" if torch.cuda.is_available() else "cpu"
+        self.model = AutoModelForCausalLM.from_pretrained(
+            model_path,
+            token=settings.HUGGINGFACE_ACCESS_TOKEN,
+        ).to(self.device) # TODO pytorch 설치해야
+        self.tokenizer = AutoTokenizer.from_pretrained(
+            model_path,
+            token=settings.HUGGINGFACE_ACCESS_TOKEN,
+        )
+        self.payload = default_payload if default_payload else self._default_payload()
+    def _default_payload(self) -> Dict[str, Any]:
+        return {
+            "inputs": "How is the weather?",
+            "parameters": {
+                "max_new_tokens": settings.MAX_NEW_TOKENS_INFERENCE,
+                "top_p": settings.TOP_P_INFERENCE,
+                "temperature": settings.TEMPERATURE_INFERENCE,
+                "return_full_text": False, # TODO 사용 가능한 파라미터인지 확인 필요
+            },
+        }
+
+
+    def set_payload(self, inputs: str, parameters: Optional[Dict[str, Any]] = None) -> None:
+        inputs = self.tokenizer([inputs],  return_tensors="pt").to(self.device) # TODO self.device 확실히 처리되어야 함
+        self.payload["inputs"] = inputs
+        if parameters:
+            self.payload["parameters"].update(parameters)
+
+    def inference(self):
+        inputs = self.payload["inputs"]
+        parameters = self.payload["parameters"]
+        output = self.model.generate(**inputs, **parameters)
+        generated_text = self.tokenizer.decode(output[0], skip_special_tokens=True)
+        requested_format_answer = [{"generated_text": generated_text}]
+        
+        return requested_format_answer
 
 
 class LLMInferenceSagemakerEndpoint(Inference):
