@@ -10,13 +10,15 @@ from steps.feature_engineering.rag import chunk_and_embed
 @pipeline
 def feature_engineering(author_full_names: list[str], wait_for: str | list[str] | None = None) -> list[str]:
     raw_documents = query_data_warehouse(author_full_names, after=wait_for)
-
+    print("raw_documents\n", raw_documents)
     cleaned_documents = clean_documents(raw_documents)
+    print("cleaned_documents\n", cleaned_documents)
     # last_step_1 = fe_steps.load_to_vector_db(cleaned_documents)
     last_step_1 = load_to_vector_db(cleaned_documents)
 
     # embedded_documents = fe_steps.chunk_and_embed(cleaned_documents)
     embedded_documents = chunk_and_embed(cleaned_documents)
+    print("embedded_documents\n", embedded_documents)
     # last_step_2 = fe_steps.load_to_vector_db(embedded_documents)
     last_step_2 = load_to_vector_db(embedded_documents)
 
@@ -24,4 +26,4 @@ def feature_engineering(author_full_names: list[str], wait_for: str | list[str] 
     # return cleaned_documents
 
 if __name__ == "__main__":
-    feature_engineering(author_full_names=["Alice Johnson", "Bob Smith", "Charlie Brown"]).run()
+    feature_engineering(author_full_names=["Alice Johnson", "Bob Smith", "Charlie Brown"])

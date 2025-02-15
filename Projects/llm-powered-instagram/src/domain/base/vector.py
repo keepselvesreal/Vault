@@ -87,11 +87,11 @@ class VectorBaseDocument(BaseModel, Generic[T], ABC):
     @classmethod
     def _create_collection(cls, collection_name: str, use_vector_index: bool = True) -> bool:
         if use_vector_index is True:
-            vectors_config = VectorParams(size=EmbeddingModelSingleton().embedding_size, distnace=Distance.COSINE)
+            vectors_config = VectorParams(size=EmbeddingModelSingleton().embedding_size, distance=Distance.COSINE)
         else:
             vectors_config = {}
-        
-        return connection.create_collection(collection_name=collection_name, vectors_config=vectors_config) 
+
+        return connection.create_collection(collection_name=collection_name, vectors_config=vectors_config)
 
 
     @classmethod

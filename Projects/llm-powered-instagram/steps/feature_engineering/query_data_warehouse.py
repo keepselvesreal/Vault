@@ -7,7 +7,7 @@ import uuid
 
 from src.domain.base.nosql import NoSQLBaseDocument
 from src.domain.documents import UserDocument, Document, ArticleDocument, PostDocument, RepositoryDocument
-from src.application import utils
+from src.application.utils.split_user_full_name import split_user_full_name
 
 
 @step
@@ -20,10 +20,11 @@ def query_data_warehouse(
         logger.info(f"Querying data warehouse for user: {author_full_name}")
 
         # first_name, last_name = utils.split_user_full_name(author_full_name)
-        # logger.info(f"First name: {first_name}, Last name: {last_name}")
-        # user = UserDocument.get_or_create(first_name=first_name, last_name=last_name)
-        user = UserDocument(first_name="tae-su", last_name="kang")
-        user.id = uuid.UUID("67d9d100-1371-4997-a161-b69b2e284ef1")
+        first_name, last_name = split_user_full_name(author_full_name)
+        logger.info(f"First name: {first_name}, Last name: {last_name}")
+        user = UserDocument.get_or_create(first_name=first_name, last_name=last_name)
+        # user = UserDocument(first_name="tae-su", last_name="kang")
+        # user.id = uuid.UUID("67d9d100-1371-4997-a161-b69b2e284ef1")
         authors.append(user)
 
         results = fetch_all_data(user)
@@ -92,3 +93,7 @@ def get_metadata(documents: list[Document]) -> dict:
             value["authors"] = list(set(value["authors"]))
 
     return metadata
+
+if __name__ == "__main__":
+    results = query_data_warehouse(["Alice Johnson", "Bob Smith", "Charlie Brown"])
+    print("query_data_warehouse step 출력\n", results)
