@@ -4,3 +4,9 @@
 **/.env
 
 /projects/llm-powered-instagram/qdrant_storage/
+
+# Terraform
+**/.terraform/*
+**/*.tfstate
+**/*.tfstate.*
+**/.terraform.lock.hcl
